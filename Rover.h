@@ -7,3 +7,14 @@
  *
  */
 
+#ifndef ROVER_H
+#define ROVER_H
+#include "Species.h"
+class Rover : public Species {
+public:
+	const char* commands[11];
+	
+	Rover();
+	char getSymbol();
+};
+#endif

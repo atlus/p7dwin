@@ -43,6 +43,15 @@
 
 #endif // TEST
 
+//enum dir{
+//	WEST, NORTH, SOUTH, EAST
+//}
+
+#define WEST 0
+#define NORTH 1
+#define SOUTH 2
+#define EAST 3
+
 //
 // CREATURE.H
 //
@@ -109,7 +118,6 @@ void DarwinBoard::printBoard(){
 
 void DarwinBoard::putCreature(int newX, int newY, Creature& c){
 	board[newX][newY] = &c;
-	cout << &c << endl;
 }
 // END
 // DARINBOARD.H
@@ -136,6 +144,22 @@ char Food::getSymbol(){
 }
 //END
 //FOOD.H
+//
+
+//
+//HOPPER.H
+//
+#include "Hopper.h"
+Hopper::Hopper(){
+commands[0] = "hop";
+commands[1] = "go 0";
+}
+
+char Hopper::getSymbol(){
+	return 'h';
+}
+//END
+//HOPPER.H
 //
 
 // ----
@@ -214,11 +238,21 @@ int main () {
 	try {
 		cout << "*** Darwin 8x8 ***" << endl;
 		DarwinBoard eightbyeight(8,8);
-		eightbyeight.printBoard();
+		//eightbyeight.printBoard();
 		Food f;
-		Creature c(0, 0, f);
-		cout << &c << endl;
-		eightbyeight.putCreature(0, 0, c);
+		Hopper h;
+		Creature f1(0, EAST, f);
+		Creature f2(0, NORTH, f);
+		Creature h1(0, NORTH, h);
+		Creature h2(0, EAST, h);
+		Creature h3(0, SOUTH, h);
+		Creature h4(0, WEST, h);
+		eightbyeight.putCreature(0, 0, f1);
+		eightbyeight.putCreature(7, 7, f2);
+		eightbyeight.putCreature(3, 3, h1);
+		eightbyeight.putCreature(3, 4, h2);
+		eightbyeight.putCreature(4, 4, h3);
+		eightbyeight.putCreature(4, 3, h4);
 		eightbyeight.printBoard();
 		/*
 		 8x8 Darwin
@@ -272,7 +306,7 @@ int main () {
 		 Call rand(), mod it with 5184 (72x72), and use that for the position
 		 in a row-major order grid.
 		 Call rand() again, mod it with 4 and use that for it's direction with
-		 the ordering: west, north, east, south.
+		 the ordering: 0 = west, 1 = north, 2 = east, 3 = south.
 		 Do that for each kind of creature.
 		 10 Food
 		 10 Hopper

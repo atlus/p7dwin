@@ -7,3 +7,14 @@
  *
  */
 
+#ifndef TRAP_H
+#define TRAP_H
+#include "Species.h"
+class Trap : public Species {
+public:
+	const char* commands[5];
+	
+	Trap();
+	char getSymbol();
+};
+#endif

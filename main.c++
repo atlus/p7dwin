@@ -43,6 +43,15 @@
 
 #endif // TEST
 
+//enum dir{
+//	WEST, NORTH, SOUTH, EAST
+//}
+
+#define WEST 0
+#define NORTH 1
+#define SOUTH 2
+#define EAST 3
+
 //
 // CREATURE.H
 //
@@ -153,6 +162,50 @@ char Hopper::getSymbol(){
 //HOPPER.H
 //
 
+//
+//ROVER.H
+//
+#include "Rover.h"
+Rover::Rover(){
+	 commands[0] = "if_enemy 9";
+	 commands[1] = "if_empty 7";
+	 commands[2] = "if_random 5";
+	 commands[3] = "left";
+	 commands[4] = "go 0";
+	 commands[5] = "right";
+	 commands[6] = "go 0";
+	 commands[7] = "hop";
+	 commands[8] = "go 0";
+	 commands[9] = "infect";
+	 commands[10] =  "go 0";
+}
+
+char Rover::getSymbol(){
+	return 'r';
+}
+//END
+//ROVER.H
+//
+
+//
+//TRAP.H
+//
+#include "Trap.h"
+Trap::Trap(){
+	 commands[0] = "if_enemy 3";
+	 commands[1] = "left";
+	 commands[2] = "go 0";
+	 commands[3] = "infect";
+	 commands[4] = "go 0";
+}
+
+char Trap::getSymbol(){
+	return 't';
+}
+//END
+//TRAP.H
+//
+
 // ----
 // main
 // ----
@@ -229,12 +282,21 @@ int main () {
 	try {
 		cout << "*** Darwin 8x8 ***" << endl;
 		DarwinBoard eightbyeight(8,8);
-		eightbyeight.printBoard();
+		//eightbyeight.printBoard();
 		Food f;
-		Creature food1(0, 0, f);
-		Creature food2(0, 0, f);
-		eightbyeight.putCreature(0, 0, food1);
-		eightbyeight.putCreature(7, 7, food2);
+		Hopper h;
+		Creature f1(0, EAST, f);
+		Creature f2(0, NORTH, f);
+		Creature h1(0, NORTH, h);
+		Creature h2(0, EAST, h);
+		Creature h3(0, SOUTH, h);
+		Creature h4(0, WEST, h);
+		eightbyeight.putCreature(0, 0, f1);
+		eightbyeight.putCreature(7, 7, f2);
+		eightbyeight.putCreature(3, 3, h1);
+		eightbyeight.putCreature(3, 4, h2);
+		eightbyeight.putCreature(4, 4, h3);
+		eightbyeight.putCreature(4, 3, h4);
 		eightbyeight.printBoard();
 		/*
 		 8x8 Darwin
@@ -288,7 +350,7 @@ int main () {
 		 Call rand(), mod it with 5184 (72x72), and use that for the position
 		 in a row-major order grid.
 		 Call rand() again, mod it with 4 and use that for it's direction with
-		 the ordering: west, north, east, south.
+		 the ordering: 0 = west, 1 = north, 2 = east, 3 = south.
 		 Do that for each kind of creature.
 		 10 Food
 		 10 Hopper
