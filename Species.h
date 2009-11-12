@@ -12,7 +12,8 @@
 
 
 class Species {
-	
+	public:
+		virtual char getSymbol();
 
 //
 // ACTIONS

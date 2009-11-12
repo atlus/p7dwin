@@ -14,5 +14,6 @@ public:
 	const char* commands[2];
 	
 	Food();
+	char getSymbol();
 };
 #endif

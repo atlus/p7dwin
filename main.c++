@@ -43,7 +43,28 @@
 
 #endif // TEST
 
+//
+// CREATURE.H
+//
 
+#include "Creature.h"
+Creature::Creature(int pc, int dir, Species& spIn){
+	programCount = pc;
+	direction = dir;
+	spointer = &spIn;
+}
+
+Species* Creature::getSpecies(){
+	return spointer;
+}
+
+char Creature::getSymbol(){
+	if(spointer != NULL){
+		return spointer->getSymbol();
+	}else{
+		return '.';
+	}
+}
 //
 // DARINBOARD.H
 //
@@ -61,7 +82,7 @@ DarwinBoard::DarwinBoard(int inX, int inY){
 	for(int i = 0; i < x; i++){
 		for(int j = 0; j < y; j++){
 //			cout << j << endl;
-			board[i].push_back('.');
+			board[i].push_back(NULL);
 		}
 	}
 }
@@ -75,15 +96,30 @@ void DarwinBoard::printBoard(){
 	for(int i = 0; i < x; i++){
 		cout << i<< " ";
 		for(int j = 0; j < y; j++){
-			cout << board[i][j];
+			if(board[i][j] != NULL){
+				cout << board[i][j]->getSymbol();
+			}else{
+				cout << ".";
+			}
 		}
 		cout << endl;
 		
 	}
 }
+
+void DarwinBoard::putCreature(int newX, int newY, Creature& c){
+	board[newX][newY] = &c;
+}
 // END
 // DARINBOARD.H
 //
+
+//
+//SPECIES.H
+//
+char Species::getSymbol(){
+ return '.';
+}
 
 //
 //FOOD.H
@@ -93,8 +129,28 @@ Food::Food(){
 commands[0] = "left";
 commands[1] = "go 0";
 }
+
+char Food::getSymbol(){
+	return 'f';
+}
 //END
 //FOOD.H
+//
+
+//
+//HOPPER.H
+//
+#include "Hopper.h"
+Hopper::Hopper(){
+commands[0] = "hop";
+commands[1] = "go 0";
+}
+
+char Hopper::getSymbol(){
+	return 'h';
+}
+//END
+//HOPPER.H
 //
 
 // ----
@@ -175,7 +231,11 @@ int main () {
 		DarwinBoard eightbyeight(8,8);
 		eightbyeight.printBoard();
 		Food f;
-		cout << f.commands[1] << endl;
+		Creature food1(0, 0, f);
+		Creature food2(0, 0, f);
+		eightbyeight.putCreature(0, 0, food1);
+		eightbyeight.putCreature(7, 7, food2);
+		eightbyeight.printBoard();
 		/*
 		 8x8 Darwin
 		 Food,   facing east,  at (0, 0)
