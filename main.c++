@@ -78,9 +78,10 @@ char Creature::getSymbol(){
 
 int Creature::process(int data){
 	//const char* command = spointer->commands[programCount];
-	std::string command = spointer->commands[programCount];\
+	
 	int returnInt = -1;
 	while(moved == false){
+		std::string command = spointer->commands[programCount];
 		returnInt = doCommand(command,data);
 	}
 	return returnInt;
@@ -123,6 +124,7 @@ int Creature::doCommand(std::string c, int data){
 				programCount++;
 				return 1;	// tell darwin to infect
 			}
+			moved = true;
 			programCount++;
 		}else{ // Perform Control
 			int p = atoi(right.c_str());		
@@ -264,14 +266,22 @@ void DarwinBoard::doTurn(){
 			}	
 		}	
 	}
+	for(int r = 0; r < x; r++){
+		for(int c = 0; c < y; c++){
+			if(board[r][c] != NULL){
+				board[r][c]->setMoved(false);
+			}		
+		}	
+	}
 	++turn;
 }
 
 void DarwinBoard::run(int times){
 	while(--times >= 0){
-		doTurn();
 		printBoard();
+		doTurn();
 	}
+	printBoard();
 }
 // END
 // DARINBOARD.H

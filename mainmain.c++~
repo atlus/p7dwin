@@ -78,9 +78,10 @@ char Creature::getSymbol(){
 
 int Creature::process(int data){
 	//const char* command = spointer->commands[programCount];
-	std::string command = spointer->commands[programCount];\
+	
 	int returnInt = -1;
 	while(moved == false){
+	std::string command = spointer->commands[programCount];
 		returnInt = doCommand(command,data);
 	}
 	return returnInt;
@@ -264,14 +265,22 @@ void DarwinBoard::doTurn(){
 			}	
 		}	
 	}
+	for(int r = 0; r < x; r++){
+		for(int c = 0; c < y; c++){
+			if(board[r][c] != NULL){
+				board[r][c]->setMoved(false);
+			}		
+		}	
+	}
 	++turn;
 }
 
 void DarwinBoard::run(int times){
 	while(--times >= 0){
-		doTurn();
 		printBoard();
+		doTurn();
 	}
+	printBoard();
 }
 // END
 // DARINBOARD.H
@@ -451,9 +460,7 @@ int main () {
 		eightbyeight.putCreature(3, 4, h2);
 		eightbyeight.putCreature(4, 4, h3);
 		eightbyeight.putCreature(4, 3, h4);
-		eightbyeight.printBoard();
-		eightbyeight.doTurn();
-		eightbyeight.printBoard();
+		eightbyeight.run(5);
 		/*
 		 8x8 Darwin
 		 Food,   facing east,  at (0, 0)
