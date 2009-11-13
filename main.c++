@@ -52,6 +52,14 @@
 #define EAST 2
 #define SOUTH 3
 
+// wall 0
+// empty 1
+// same 2
+// diff 3
+
+// hop 0
+// infect 1
+
 //
 // CREATURE.H
 //
