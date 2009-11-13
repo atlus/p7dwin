@@ -11,7 +11,7 @@
 #include "Species.h"
 class Food : public Species {
 public:
-	const char* commands[2];
+	//const char* commands[2];
 	
 	Food();
 	char getSymbol();

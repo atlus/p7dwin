@@ -13,7 +13,9 @@
 
 class Species {
 	public:
+		const char* commands[11];
 		virtual char getSymbol();
+		
 
 //
 // ACTIONS

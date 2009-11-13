@@ -7,3 +7,14 @@
  *
  */
 
+#ifndef HOPPER_H
+#define HOPPER_H
+#include "Species.h"
+class Hopper : public Species {
+public:
+	const char* commands[2];
+	
+	Hopper();
+	char getSymbol();
+};
+#endif

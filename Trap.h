@@ -12,7 +12,7 @@
 #include "Species.h"
 class Trap : public Species {
 public:
-	const char* commands[5];
+	//const char* commands[5];
 	
 	Trap();
 	char getSymbol();

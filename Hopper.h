@@ -12,7 +12,7 @@
 #include "Species.h"
 class Hopper : public Species {
 public:
-	const char* commands[2];
+	//const char* commands[2];
 	
 	Hopper();
 	char getSymbol();

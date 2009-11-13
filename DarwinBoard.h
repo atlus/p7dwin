@@ -16,6 +16,7 @@ public:
    DarwinBoard(int inX, int inY);
 	void printBoard();
 	void putCreature(int newX, int newY, Creature& c);
+	void doTurn();
 };
 
 #endif

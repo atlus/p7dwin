@@ -74,6 +74,50 @@ char Creature::getSymbol(){
 		return '.';
 	}
 }
+
+void Creature::process(int data){
+	//const char* command = spointer->commands[programCount];
+	std::string command = spointer->commands[programCount];
+	doCommand(command, data);
+	//std::cout << command << std::endl;
+	
+}
+
+int Creature::getDirection(){
+	return direction;
+}
+
+void Creature::doCommand(std::string c, int data){
+		int pos = int(c.find(" "));
+		std::string left = c.substr(0, pos);
+		std::string right= c.substr(pos + 1, c.size());
+		//std::cout << "CREATURE----| Dir:" << direction << " Species:" << getSymbol() << std::endl;
+		//std::cout << "LEFT:" << left << " RIGHT:" << right << " POS:" << pos << " DATA:" << data << std::endl;
+		if(pos == -1){ // Perform Action
+			if(left == "left"){
+			
+			}else if(left == "right"){
+		
+			}else if(left == "hop"){
+		
+			}else if(left == "infect"){
+			}
+			programCount++;
+		}else{ // Perform Control
+			int p = atoi(right.c_str());		
+			if(left == "if_empty"){
+				programCount = p;
+			}else if(left == "if_wall"){
+				programCount = p;
+			}else if(left == "if_random"){
+				
+			}else if(left == "if_enemy"){
+				programCount = p;
+			}else if(left == "go"){
+				programCount = p;
+			}
+		}
+}
 //
 // DARINBOARD.H
 //
@@ -118,6 +162,47 @@ void DarwinBoard::printBoard(){
 
 void DarwinBoard::putCreature(int newX, int newY, Creature& c){
 	board[newX][newY] = &c;
+}
+
+void DarwinBoard::doTurn(){
+	for(int i = 0; i < x; i++){
+		for(int j = 0; j < y; j++){
+			if(board[i][j] != NULL){
+				int dir = board[i][j]->getDirection();
+				int checkX = i;
+				int checkY = j;
+				switch(dir){
+					case WEST:
+						checkY-=1;
+						break;
+					case NORTH:
+						checkX-=1;
+						break;
+					case EAST:
+						checkY+=1;
+						break;
+					case SOUTH:
+						checkX+=1;
+						break;
+				}
+				int data = -1;
+				if((checkX >= x || checkX < 0) || (checkY >= y || checkY < 0)){
+					data = 0;	// wall ahead
+				}else{
+					//std::cout << "checkX:" << checkX << " checkY:" << checkY << std::endl;
+					if(board[checkX][checkY] == NULL){
+						data = 1; // empty ahead
+					}else if(board[checkX][checkY]->getSymbol() == board[i][j]->getSymbol()){
+						data = 2; // same species ahead					
+					}else{
+						data = 3; // different species ahead
+					}
+				}
+				board[i][j]->process(data);
+			}	
+		}	
+	}
+	++turn;
 }
 // END
 // DARINBOARD.H
@@ -297,6 +382,8 @@ int main () {
 		eightbyeight.putCreature(3, 4, h2);
 		eightbyeight.putCreature(4, 4, h3);
 		eightbyeight.putCreature(4, 3, h4);
+		eightbyeight.printBoard();
+		eightbyeight.doTurn();
 		eightbyeight.printBoard();
 		/*
 		 8x8 Darwin

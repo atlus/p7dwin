@@ -10,5 +10,8 @@ public:
 	Creature(int pc, int dir, Species &spIn);
 	Species* getSpecies();
 	char getSymbol();
+	void process(int data);
+	void doCommand(std::string c, int data);
+	int getDirection();
 };
 #endif
