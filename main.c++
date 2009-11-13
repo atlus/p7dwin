@@ -128,7 +128,7 @@ int Creature::doCommand(std::string c, int data){
 				moved = true;
 				programCount++;
 				return 0;	// tell darwin to hop
-			}else if(left == "infect"){
+			}else if(left == "infect" && data == 3){
 				moved = true;
 				programCount++;
 				return 1;	// tell darwin to infect
@@ -195,6 +195,8 @@ DarwinBoard::DarwinBoard(int inX, int inY){
 	turn = 0;
 	x = inX;
 	y = inY;
+	bestCounter = 0;
+	roverCounter = 0;
 	board.resize(x);
 	
 	//cout << board.capacity() << endl;
@@ -274,7 +276,7 @@ void DarwinBoard::doTurn(){
 					board[checkX][checkY] = board[i][j];
 					board[i][j] = NULL;
 				}else if(res == 1){ // infect
-					if(board[checkX][checkY] != NULL)
+					std::cout << data << std::endl;
 					board[checkX][checkY]->infect(board[i][j]->getSpecies());
 				}
 			}	
@@ -299,9 +301,9 @@ void DarwinBoard::run(int times, int print){
 		if(times % print == 0){
 			if(bestCounter == 0){
 				std::cout << "Best is dead!" << std::endl;
-				times = -1;		
+				//times = -1;		
 			}
-			printBoard();
+			//printBoard();
 		}
 	}
 	//printBoard();
@@ -413,19 +415,21 @@ Best::Best(){
 	commands[11] = "go 0";
 	*/
 	
-	commands[0] = "if_wall 8";
-	commands[1] = "if_enemy 11";
-	commands[2] = "left";
-	commands[3] = "if_enemy 11";
-	commands[4] = "left";
-	commands[5] = "if_enemy 11";
-	commands[6] = "left";
-	commands[7] = "if_enemy 11";
-	commands[8] = "left";
-	commands[9] = "hop";
-	commands[10] = "if_wall 8";
-	commands[11] = "infect";
-	commands[12] = "go 0";
+	/*
+	 commands[0] = "if_wall 8";
+	 commands[1] = "if_enemy 11";
+	 commands[2] = "left";
+	 commands[3] = "left";
+	 commands[4] = "go 0";
+	 commands[5] = "right";
+	 commands[6] = "go 0";
+	 commands[7] = "hop";
+	 commands[8] = "go 0";
+	 commands[9] = "infect";
+	 commands[10] =  "go 0";
+	 */
+	 commands[0] = "infect";
+	 commands[1] = "go 0";
 }
 
 char Best::getSymbol(){
