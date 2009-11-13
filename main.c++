@@ -277,12 +277,15 @@ void DarwinBoard::doTurn(){
 	++turn;
 }
 
-void DarwinBoard::run(int times){
-	while(--times >= 0){
-		printBoard();
-		doTurn();
-	}
+void DarwinBoard::run(int times, int print){
 	printBoard();
+	while(--times >= 0){
+		doTurn();
+		if(times % print == 0){
+			printBoard();
+		}
+	}
+	//printBoard();
 }
 // END
 // DARINBOARD.H
@@ -464,7 +467,7 @@ int main () {
 		eightbyeight.putCreature(3, 4, h2);
 		eightbyeight.putCreature(4, 4, h3);
 		eightbyeight.putCreature(4, 3, h4);
-		eightbyeight.run(5);
+		eightbyeight.run(5, 1);
 		/*
 		 8x8 Darwin
 		 Food,   facing east,  at (0, 0)
@@ -497,7 +500,7 @@ int main () {
 		sevenbynine.putCreature(3, 2, h1);
 		sevenbynine.putCreature(5, 4, r1);
 		sevenbynine.putCreature(6, 8, t2);
-		sevenbynine.run(5);
+		sevenbynine.run(5, 1);
 		/*
 		 7x9 Darwin
 		 Trap,   facing south, at (0, 0)
@@ -520,6 +523,40 @@ int main () {
 	
 	try {
 		cout << "*** Darwin 72x72 without Best ***" << endl;
+		DarwinBoard s2bys2(72,72);
+		for(int i = 0; i < 10; i++){
+			int rd = rand() % 5184;
+			int row = rd / 72;
+			int col = rd % 72;
+			int dir = rand() % 4;
+			Creature c(0, dir, f);
+			s2bys2.putCreature(row, col, c);		
+		}
+		for(int i = 0; i < 10; i++){
+			int rd = rand() % 5184;
+			int row = rd / 72;
+			int col = rd % 72;
+			int dir = rand() % 4;
+			Creature c(0, dir, h);
+			s2bys2.putCreature(row, col, c);		
+		}
+		for(int i = 0; i < 10; i++){
+			int rd = rand() % 5184;
+			int row = rd / 72;
+			int col = rd % 72;
+			int dir = rand() % 4;
+			Creature c(0, dir, r);
+			s2bys2.putCreature(row, col, c);		
+		}
+		for(int i = 0; i < 10; i++){
+			int rd = rand() % 5184;
+			int row = rd / 72;
+			int col = rd % 72;
+			int dir = rand() % 4;
+			Creature c(0, dir, t);
+			s2bys2.putCreature(row, col, c);		
+		}
+		//s2bys2.run(1000, 100);
 		/*
 		 Randomly place the following creatures facing randomly.
 		 Call rand(), mod it with 5184 (72x72), and use that for the position

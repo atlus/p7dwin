@@ -17,6 +17,7 @@ public:
 	void printBoard();
 	void putCreature(int newX, int newY, Creature& c);
 	void doTurn();
+	void run(int times);
 };
 
 #endif
