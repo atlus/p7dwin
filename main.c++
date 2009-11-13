@@ -49,8 +49,8 @@
 
 #define WEST 0
 #define NORTH 1
-#define SOUTH 2
-#define EAST 3
+#define EAST 2
+#define SOUTH 3
 
 //
 // CREATURE.H
@@ -61,6 +61,7 @@ Creature::Creature(int pc, int dir, Species& spIn){
 	programCount = pc;
 	direction = dir;
 	spointer = &spIn;
+	moved = false;
 }
 
 Species* Creature::getSpecies(){
@@ -75,10 +76,15 @@ char Creature::getSymbol(){
 	}
 }
 
-void Creature::process(int data){
+int Creature::process(int data){
 	//const char* command = spointer->commands[programCount];
-	std::string command = spointer->commands[programCount];
-	doCommand(command, data);
+	std::string command = spointer->commands[programCount];\
+	int returnInt = -1;
+	while(moved == false){
+		returnInt = doCommand(command,data);
+	}
+	return returnInt;
+	//return doCommand(command, data);
 	//std::cout << command << std::endl;
 	
 }
@@ -87,7 +93,7 @@ int Creature::getDirection(){
 	return direction;
 }
 
-void Creature::doCommand(std::string c, int data){
+int Creature::doCommand(std::string c, int data){
 		int pos = int(c.find(" "));
 		std::string left = c.substr(0, pos);
 		std::string right= c.substr(pos + 1, c.size());
@@ -95,29 +101,79 @@ void Creature::doCommand(std::string c, int data){
 		//std::cout << "LEFT:" << left << " RIGHT:" << right << " POS:" << pos << " DATA:" << data << std::endl;
 		if(pos == -1){ // Perform Action
 			if(left == "left"){
-			
+				if(direction == 0){
+					direction = 3;
+				}else{
+					direction = direction - 1;
+				}
+				moved = true;
 			}else if(left == "right"){
-		
-			}else if(left == "hop"){
-		
+				if(direction == 3){
+					direction = 0;
+				}else{
+					direction = direction + 1;
+				}
+				moved = true;
+			}else if(left == "hop" && data == 1){
+				moved = true;
+				programCount++;
+				return 0;	// tell darwin to hop
 			}else if(left == "infect"){
+				moved = true;
+				programCount++;
+				return 1;	// tell darwin to infect
 			}
 			programCount++;
 		}else{ // Perform Control
 			int p = atoi(right.c_str());		
-			if(left == "if_empty"){
-				programCount = p;
+			if(left == "if_empty" && data == 1){
+				if(data == 1){
+					programCount = p;
+				}else{
+					programCount++;				
+				}
 			}else if(left == "if_wall"){
-				programCount = p;
+				if(data == 0){
+					programCount = p;
+				}else{
+					programCount++;				
+				}
 			}else if(left == "if_random"){
-				
-			}else if(left == "if_enemy"){
-				programCount = p;
+				if((rand() & 1) == 1){
+					programCount = p;
+				}else{
+					programCount++;				
+				}
+			}else if(left == "if_enemy" && data == 3){
+				if(data == 3){
+					programCount = p;
+				}else{
+					programCount++;				
+				}
 			}else if(left == "go"){
 				programCount = p;
 			}
 		}
+		return -1;	// if we did not hop or infect
 }
+
+void Creature::infect(Species* sp){
+		programCount = 0;
+		spointer = sp;
+}
+
+void Creature::setMoved(bool b){
+	moved = b;
+}
+
+bool Creature::getMoved(){
+	return moved;
+}
+
+//END
+//CREATURE.H
+//
+
 //
 // DARINBOARD.H
 //
@@ -167,7 +223,7 @@ void DarwinBoard::putCreature(int newX, int newY, Creature& c){
 void DarwinBoard::doTurn(){
 	for(int i = 0; i < x; i++){
 		for(int j = 0; j < y; j++){
-			if(board[i][j] != NULL){
+			if(board[i][j] != NULL && !board[i][j]->getMoved()){
 				int dir = board[i][j]->getDirection();
 				int checkX = i;
 				int checkY = j;
@@ -198,11 +254,24 @@ void DarwinBoard::doTurn(){
 						data = 3; // different species ahead
 					}
 				}
-				board[i][j]->process(data);
+				int res = board[i][j]->process(data);
+				if(res == 0){	// hop
+					board[checkX][checkY] = board[i][j];
+					board[i][j] = NULL;
+				}else if(res == 1){ // infect
+					board[checkX][checkY]->infect(board[i][j]->getSpecies());
+				}
 			}	
 		}	
 	}
 	++turn;
+}
+
+void DarwinBoard::run(int times){
+	while(--times >= 0){
+		doTurn();
+		printBoard();
+	}
 }
 // END
 // DARINBOARD.H
@@ -382,9 +451,7 @@ int main () {
 		eightbyeight.putCreature(3, 4, h2);
 		eightbyeight.putCreature(4, 4, h3);
 		eightbyeight.putCreature(4, 3, h4);
-		eightbyeight.printBoard();
-		eightbyeight.doTurn();
-		eightbyeight.printBoard();
+		eightbyeight.run(5);
 		/*
 		 8x8 Darwin
 		 Food,   facing east,  at (0, 0)

@@ -3,6 +3,7 @@
 #include "Species.h"
 class Creature {
 private:
+	bool moved;
 	int programCount;
 	int direction;
 	Species* spointer;
@@ -10,7 +11,11 @@ public:
 	Creature(int pc, int dir, Species &spIn);
 	Species* getSpecies();
 	char getSymbol();
-	void process(int data);
-	void doCommand(std::string c, int data);
+	int process(int data);
+	int doCommand(std::string c, int data);
+	int getDirection();
+	void infect(Species* sp);
+	bool getMoved();
+	void setMoved();
 };
 #endif
