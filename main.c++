@@ -82,6 +82,7 @@ int Creature::process(int data){
 	int returnInt = -1;
 	while(moved == false){
 		std::string command = spointer->commands[programCount];
+		//std::cout << command << std::endl;
 		returnInt = doCommand(command,data);
 	}
 	return returnInt;
@@ -128,7 +129,7 @@ int Creature::doCommand(std::string c, int data){
 			programCount++;
 		}else{ // Perform Control
 			int p = atoi(right.c_str());		
-			if(left == "if_empty" && data == 1){
+			if(left == "if_empty"){
 				if(data == 1){
 					programCount = p;
 				}else{
@@ -146,7 +147,7 @@ int Creature::doCommand(std::string c, int data){
 				}else{
 					programCount++;				
 				}
-			}else if(left == "if_enemy" && data == 3){
+			}else if(left == "if_enemy"){
 				if(data == 3){
 					programCount = p;
 				}else{
@@ -442,13 +443,15 @@ int main () {
 	// ----------
 	// darwin 8x8
 	// ----------
-	
+	Food f;
+	Hopper h;
+	Trap t;
+	Rover r;
+	//Best b;
 	try {
 		cout << "*** Darwin 8x8 ***" << endl;
 		DarwinBoard eightbyeight(8,8);
 		//eightbyeight.printBoard();
-		Food f;
-		Hopper h;
 		Creature f1(0, EAST, f);
 		Creature f2(0, NORTH, f);
 		Creature h1(0, NORTH, h);
@@ -486,7 +489,15 @@ int main () {
 	try {
 		cout << "*** Darwin 7x9 ***" << endl;
 		DarwinBoard sevenbynine(7,9);
-		sevenbynine.printBoard();
+		Creature t1(0, SOUTH, t);
+		Creature h1(0, EAST, h);
+		Creature r1(0, NORTH, r);
+		Creature t2(0, WEST, t);
+		sevenbynine.putCreature(0, 0, t1);
+		sevenbynine.putCreature(3, 2, h1);
+		sevenbynine.putCreature(5, 4, r1);
+		sevenbynine.putCreature(6, 8, t2);
+		sevenbynine.run(5);
 		/*
 		 7x9 Darwin
 		 Trap,   facing south, at (0, 0)
