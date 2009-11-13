@@ -237,9 +237,11 @@ void DarwinBoard::putCreature(int newX, int newY, Creature& c){
 void DarwinBoard::doTurn(){
 	bestCounter = 0;
 	roverCounter = 0;
+	//std::cout << "-----------------------------" << std::endl;
 	for(int i = 0; i < x; i++){
 		for(int j = 0; j < y; j++){
 			if(board[i][j] != NULL && !board[i][j]->getMoved()){
+				//std::cout << board[i][j]->getSymbol() << " " << i << "," << j << std::endl;
 				int dir = board[i][j]->getDirection();
 				int checkX = i;
 				int checkY = j;
@@ -281,9 +283,12 @@ void DarwinBoard::doTurn(){
 			}	
 		}	
 	}
+	//std::cout << "-----------------------------" << std::endl;
 	for(int r = 0; r < x; r++){
 		for(int c = 0; c < y; c++){
 			if(board[r][c] != NULL){
+			   //if(board[r][c] -> getSymbol() == 'b')
+					//std::cout << board[r][c] << std::endl;
 				board[r][c]->setMoved(false);
 				if(board[r][c]->getSymbol() == 'b') bestCounter++;
 				if(board[r][c]->getSymbol() == 'r') roverCounter++;
@@ -588,32 +593,40 @@ int main () {
 			int row = rd / 72;
 			int col = rd % 72;
 			int dir = rand() % 4;
+			{			
 			Creature c(0, dir, f);
-			s2bys2.putCreature(row, col, c);		
+			s2bys2.putCreature(row, col, c);
+			}		
 		}
 		for(int i = 0; i < 10; i++){
 			int rd = rand() % 5184;
 			int row = rd / 72;
 			int col = rd % 72;
 			int dir = rand() % 4;
+			{
 			Creature c(0, dir, h);
-			s2bys2.putCreature(row, col, c);		
+			s2bys2.putCreature(row, col, c);
+			}		
 		}
 		for(int i = 0; i < 10; i++){
 			int rd = rand() % 5184;
 			int row = rd / 72;
 			int col = rd % 72;
 			int dir = rand() % 4;
+			{
 			Creature c(0, dir, r);
-			s2bys2.putCreature(row, col, c);		
+			s2bys2.putCreature(row, col, c);
+			}		
 		}
 		for(int i = 0; i < 10; i++){
 			int rd = rand() % 5184;
 			int row = rd / 72;
 			int col = rd % 72;
 			int dir = rand() % 4;
+			{
 			Creature c(0, dir, t);
-			s2bys2.putCreature(row, col, c);		
+			s2bys2.putCreature(row, col, c);
+			}		
 		}
 		//s2bys2.run(1000, 100);
 		/*
@@ -644,47 +657,64 @@ int main () {
 	try {
 		cout << "*** Darwin 72x72 with Best ***" << endl;
 		DarwinBoard s2bys2(72,72);
-		for(int i = 0; i < 10; i++){
-			int rd = rand() % 5184;
+		vector<Creature> fcreatures;
+  		for (int i = 0; i < 10; ++i) {
+			int dir = rand() % 4;
+    		fcreatures.push_back(Creature(0, dir, f));
+  		}
+  		for(int i = 0; i < 10; i++){
+  		  	int rd = rand() % 5184;
 			int row = rd / 72;
 			int col = rd % 72;
+			s2bys2.putCreature(row, col, fcreatures[i]);		
+  		}
+  		vector<Creature> hcreatures;
+  		for (int i = 0; i < 10; ++i) {
 			int dir = rand() % 4;
-			Creature c(0, dir, f);
-			s2bys2.putCreature(row, col, c);		
-		}
-		for(int i = 0; i < 10; i++){
-			int rd = rand() % 5184;
+    		hcreatures.push_back(Creature(0, dir, h));
+  		}
+  		for(int i = 0; i < 10; i++){
+  		  	int rd = rand() % 5184;
 			int row = rd / 72;
 			int col = rd % 72;
+			s2bys2.putCreature(row, col, hcreatures[i]);		
+  		}
+		vector<Creature> rcreatures;
+		for (int i = 0; i < 10; ++i) {
 			int dir = rand() % 4;
-			Creature c(0, dir, h);
-			s2bys2.putCreature(row, col, c);		
-		}
-		for(int i = 0; i < 10; i++){
-			int rd = rand() % 5184;
+    		rcreatures.push_back(Creature(0, dir, r));
+  		}
+  		for(int i = 0; i < 10; i++){
+  		  	int rd = rand() % 5184;
 			int row = rd / 72;
 			int col = rd % 72;
+			s2bys2.putCreature(row, col, rcreatures[i]);		
+  		}
+  		vector<Creature> tcreatures;
+  		for (int i = 0; i < 10; ++i) {
 			int dir = rand() % 4;
-			Creature c(0, dir, r);
-			s2bys2.putCreature(row, col, c);		
-		}
-		for(int i = 0; i < 10; i++){
-			int rd = rand() % 5184;
+    		tcreatures.push_back(Creature(0, dir, t));
+  		}
+  		for(int i = 0; i < 10; i++){
+  		  	int rd = rand() % 5184;
 			int row = rd / 72;
 			int col = rd % 72;
+			s2bys2.putCreature(row, col, tcreatures[i]);		
+  		}
+  		vector<Creature> bcreatures;
+  		
+  		for (int i = 0; i < 10; ++i) {
 			int dir = rand() % 4;
-			Creature c(0, dir, t);
-			s2bys2.putCreature(row, col, c);		
-		}
-		for(int i = 0; i < 10; i++){
-			int rd = rand() % 5184;
+    		bcreatures.push_back(Creature(0, dir, b));
+  		}
+  		for(int i = 0; i < 10; i++){
+  		  	int rd = rand() % 5184;
 			int row = rd / 72;
 			int col = rd % 72;
-			int dir = rand() % 4;
-			Creature c(0, dir, b);
-			s2bys2.putCreature(row, col, c);		
-		}
-		s2bys2.run(1000, 1);
+			s2bys2.putCreature(row, col, bcreatures[i]);		
+  		}
+  		
+		s2bys2.run(1000, 100);
 		/*
 		 Randomly place the following creatures facing randomly.
 		 Call rand(), mod it with 5184 (72x72), and use that for the position
