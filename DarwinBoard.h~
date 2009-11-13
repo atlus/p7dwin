@@ -9,6 +9,8 @@ private:
    int x;
 	int y;
 	int turn;
+	int bestCounter;
+	int roverCounter;
 	vector<vector<Creature*> > board;
    DarwinBoard() { } // private default constructor
 	

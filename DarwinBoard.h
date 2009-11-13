@@ -11,13 +11,14 @@ private:
 	int turn;
 	int bestCounter;
 	int roverCounter;
+	int totalC;
 	vector<vector<Creature*> > board;
    DarwinBoard() { } // private default constructor
 	
 public:
    DarwinBoard(int inX, int inY);
 	void printBoard();
-	void putCreature(int newX, int newY, Creature& c);
+	bool putCreature(int newX, int newY, Creature& c);
 	void doTurn();
 	void run(int times, int print);
 };

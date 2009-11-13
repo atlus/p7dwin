@@ -197,6 +197,7 @@ DarwinBoard::DarwinBoard(int inX, int inY){
 	y = inY;
 	bestCounter = 0;
 	roverCounter = 0;
+	totalC = 0;
 	board.resize(x);
 	
 	//cout << board.capacity() << endl;
@@ -210,7 +211,7 @@ DarwinBoard::DarwinBoard(int inX, int inY){
 	}
 }
 void DarwinBoard::printBoard(){
-	cout << "Turn = " << turn << ". Best:" << bestCounter << " Rover:" << roverCounter << endl;
+	cout << "Turn = " << turn << ". TOTAL:" << totalC << " Best:" << bestCounter << " Rover:" << roverCounter << endl;
 	cout << "  ";
 	for(int i = 0; i < y; i++){
 		cout<< i ;
@@ -230,8 +231,14 @@ void DarwinBoard::printBoard(){
 	}
 }
 
-void DarwinBoard::putCreature(int newX, int newY, Creature& c){
-	board[newX][newY] = &c;
+bool DarwinBoard::putCreature(int newX, int newY, Creature& c){
+	if(board[newX][newY] == NULL){
+		board[newX][newY] = &c;
+		totalC++;
+		return true;
+	}else{
+		return false;	
+	}
 }
 
 void DarwinBoard::doTurn(){
@@ -305,7 +312,7 @@ void DarwinBoard::run(int times, int print){
 		if(times % print == 0){
 			if(bestCounter == 0){
 				std::cout << "Best is dead!" << std::endl;
-				times = -1;		
+				//times = -1;		
 			}
 			printBoard();
 		}
@@ -658,15 +665,18 @@ int main () {
 		cout << "*** Darwin 72x72 with Best ***" << endl;
 		DarwinBoard s2bys2(72,72);
 		vector<Creature> fcreatures;
+		int row = -1;
+		int col = -1;
   		for (int i = 0; i < 10; ++i) {
 			int dir = rand() % 4;
     		fcreatures.push_back(Creature(0, dir, f));
   		}
   		for(int i = 0; i < 10; i++){
-  		  	int rd = rand() % 5184;
-			int row = rd / 72;
-			int col = rd % 72;
-			s2bys2.putCreature(row, col, fcreatures[i]);		
+  			do{
+  		  		int rd = rand() % 5184;
+				row = rd / 72;
+				col = rd % 72;
+			}while(!s2bys2.putCreature(row, col, fcreatures[i]));		
   		}
   		vector<Creature> hcreatures;
   		for (int i = 0; i < 10; ++i) {
@@ -674,10 +684,11 @@ int main () {
     		hcreatures.push_back(Creature(0, dir, h));
   		}
   		for(int i = 0; i < 10; i++){
-  		  	int rd = rand() % 5184;
-			int row = rd / 72;
-			int col = rd % 72;
-			s2bys2.putCreature(row, col, hcreatures[i]);		
+  			do{
+  		  		int rd = rand() % 5184;
+				row = rd / 72;
+				col = rd % 72;
+			}while(!s2bys2.putCreature(row, col, hcreatures[i]));		
   		}
 		vector<Creature> rcreatures;
 		for (int i = 0; i < 10; ++i) {
@@ -685,10 +696,11 @@ int main () {
     		rcreatures.push_back(Creature(0, dir, r));
   		}
   		for(int i = 0; i < 10; i++){
-  		  	int rd = rand() % 5184;
-			int row = rd / 72;
-			int col = rd % 72;
-			s2bys2.putCreature(row, col, rcreatures[i]);		
+  			do{
+  		  		int rd = rand() % 5184;
+				row = rd / 72;
+				col = rd % 72;
+			}while(!s2bys2.putCreature(row, col, rcreatures[i]));		
   		}
   		vector<Creature> tcreatures;
   		for (int i = 0; i < 10; ++i) {
@@ -696,10 +708,11 @@ int main () {
     		tcreatures.push_back(Creature(0, dir, t));
   		}
   		for(int i = 0; i < 10; i++){
-  		  	int rd = rand() % 5184;
-			int row = rd / 72;
-			int col = rd % 72;
-			s2bys2.putCreature(row, col, tcreatures[i]);		
+  			do{
+  		  		int rd = rand() % 5184;
+				row = rd / 72;
+				col = rd % 72;
+			}while(!s2bys2.putCreature(row, col, tcreatures[i]));		
   		}
   		vector<Creature> bcreatures;
   		
@@ -708,10 +721,11 @@ int main () {
     		bcreatures.push_back(Creature(0, dir, b));
   		}
   		for(int i = 0; i < 10; i++){
-  		  	int rd = rand() % 5184;
-			int row = rd / 72;
-			int col = rd % 72;
-			s2bys2.putCreature(row, col, bcreatures[i]);		
+  			do{
+  		  		int rd = rand() % 5184;
+				row = rd / 72;
+				col = rd % 72;
+			}while(!s2bys2.putCreature(row, col, bcreatures[i]));		
   		}
   		
 		s2bys2.run(1000, 100);
