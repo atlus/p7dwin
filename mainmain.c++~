@@ -411,7 +411,7 @@ char Trap::getSymbol(){
 //
 #include "Best.h"
 Best::Best(){
-	
+	/*
 	commands[0] = "if_enemy 8";
 	commands[1] = "if_empty 3";
 	commands[2] = "if_wall 5";
@@ -424,7 +424,7 @@ Best::Best(){
 	commands[9] = "go 0";
 	commands[10] = "right";
 	commands[11] = "go 0";
-	
+	*/
 	/*
 	 commands[0] = "if_wall 8";
 	 commands[1] = "if_enemy 11";
@@ -440,6 +440,23 @@ Best::Best(){
 	 commands[11] = "infect";
 	 commands[12] = "go 0";
 	 */
+	 commands[0] = "if_wall 8";
+	 commands[1] = "if_enemy 12";
+	 commands[2] = "left";
+	 commands[3] = "if_enemy 12";
+	 commands[4] = "left";
+	 commands[5] = "if_enemy 12";
+	 commands[6] = "left";
+	 commands[7] = "if_enemy 12";
+	 commands[8] = "left";
+	 commands[9] = "if_wall 14";
+	 commands[10] = "hop";
+	 commands[11] = "go 0";
+	 commands[12] = "infect";
+	 commands[13] = "go 0";
+	 commands[14] = "right";
+	 commands[15] = "go 9";
+	 
 }
 
 char Best::getSymbol(){
@@ -595,47 +612,57 @@ int main () {
 	try {
 		cout << "*** Darwin 72x72 without Best ***" << endl;
 		DarwinBoard s2bys2(72,72);
-		for(int i = 0; i < 10; i++){
-			int rd = rand() % 5184;
-			int row = rd / 72;
-			int col = rd % 72;
+		vector<Creature> fcreatures;
+		int row = -1;
+		int col = -1;
+  		for (int i = 0; i < 10; ++i) {
 			int dir = rand() % 4;
-			{			
-			Creature c(0, dir, f);
-			s2bys2.putCreature(row, col, c);
-			}		
-		}
-		for(int i = 0; i < 10; i++){
-			int rd = rand() % 5184;
-			int row = rd / 72;
-			int col = rd % 72;
+    		fcreatures.push_back(Creature(0, dir, f));
+  		}
+  		for(int i = 0; i < 10; i++){
+  			do{
+  		  		int rd = rand() % 5184;
+				row = rd / 72;
+				col = rd % 72;
+			}while(!s2bys2.putCreature(row, col, fcreatures[i]));		
+  		}
+  		vector<Creature> hcreatures;
+  		for (int i = 0; i < 10; ++i) {
 			int dir = rand() % 4;
-			{
-			Creature c(0, dir, h);
-			s2bys2.putCreature(row, col, c);
-			}		
-		}
-		for(int i = 0; i < 10; i++){
-			int rd = rand() % 5184;
-			int row = rd / 72;
-			int col = rd % 72;
+    		hcreatures.push_back(Creature(0, dir, h));
+  		}
+  		for(int i = 0; i < 10; i++){
+  			do{
+  		  		int rd = rand() % 5184;
+				row = rd / 72;
+				col = rd % 72;
+			}while(!s2bys2.putCreature(row, col, hcreatures[i]));		
+  		}
+		vector<Creature> rcreatures;
+		for (int i = 0; i < 10; ++i) {
 			int dir = rand() % 4;
-			{
-			Creature c(0, dir, r);
-			s2bys2.putCreature(row, col, c);
-			}		
-		}
-		for(int i = 0; i < 10; i++){
-			int rd = rand() % 5184;
-			int row = rd / 72;
-			int col = rd % 72;
+    		rcreatures.push_back(Creature(0, dir, r));
+  		}
+  		for(int i = 0; i < 10; i++){
+  			do{
+  		  		int rd = rand() % 5184;
+				row = rd / 72;
+				col = rd % 72;
+			}while(!s2bys2.putCreature(row, col, rcreatures[i]));		
+  		}
+  		vector<Creature> tcreatures;
+  		for (int i = 0; i < 10; ++i) {
 			int dir = rand() % 4;
-			{
-			Creature c(0, dir, t);
-			s2bys2.putCreature(row, col, c);
-			}		
-		}
-		//s2bys2.run(1000, 100);
+    		tcreatures.push_back(Creature(0, dir, t));
+  		}
+  		for(int i = 0; i < 10; i++){
+  			do{
+  		  		int rd = rand() % 5184;
+				row = rd / 72;
+				col = rd % 72;
+			}while(!s2bys2.putCreature(row, col, tcreatures[i]));		
+  		}
+		s2bys2.run(1000, 100);
 		/*
 		 Randomly place the following creatures facing randomly.
 		 Call rand(), mod it with 5184 (72x72), and use that for the position
@@ -727,7 +754,6 @@ int main () {
 				col = rd % 72;
 			}while(!s2bys2.putCreature(row, col, bcreatures[i]));		
   		}
-  		
 		s2bys2.run(1000, 100);
 		/*
 		 Randomly place the following creatures facing randomly.
