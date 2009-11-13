@@ -13,7 +13,7 @@
 
 class Species {
 	public:
-		const char* commands[11];
+		const char* commands[13];
 		virtual char getSymbol();
 		
 

@@ -169,6 +169,7 @@ int Creature::doCommand(std::string c, int data){
 }
 
 void Creature::infect(Species* sp){
+		//std::cout << spointer << " " << sp->getSymbol() << std::endl;
 		programCount = 0;
 		spointer = sp;
 }
@@ -207,7 +208,7 @@ DarwinBoard::DarwinBoard(int inX, int inY){
 	}
 }
 void DarwinBoard::printBoard(){
-	cout << "Turn = " << turn << "." << endl;
+	cout << "Turn = " << turn << ". Best:" << bestCounter << " Rover:" << roverCounter << endl;
 	cout << "  ";
 	for(int i = 0; i < y; i++){
 		cout<< i ;
@@ -232,6 +233,8 @@ void DarwinBoard::putCreature(int newX, int newY, Creature& c){
 }
 
 void DarwinBoard::doTurn(){
+	bestCounter = 0;
+	roverCounter = 0;
 	for(int i = 0; i < x; i++){
 		for(int j = 0; j < y; j++){
 			if(board[i][j] != NULL && !board[i][j]->getMoved()){
@@ -258,6 +261,7 @@ void DarwinBoard::doTurn(){
 				}else{
 					//std::cout << "checkX:" << checkX << " checkY:" << checkY << std::endl;
 					if(board[checkX][checkY] == NULL){
+						//std::cout << "empty" << std::endl;
 						data = 1; // empty ahead
 					}else if(board[checkX][checkY]->getSymbol() == board[i][j]->getSymbol()){
 						data = 2; // same species ahead					
@@ -270,6 +274,7 @@ void DarwinBoard::doTurn(){
 					board[checkX][checkY] = board[i][j];
 					board[i][j] = NULL;
 				}else if(res == 1){ // infect
+					if(board[checkX][checkY] != NULL)
 					board[checkX][checkY]->infect(board[i][j]->getSpecies());
 				}
 			}	
@@ -279,6 +284,8 @@ void DarwinBoard::doTurn(){
 		for(int c = 0; c < y; c++){
 			if(board[r][c] != NULL){
 				board[r][c]->setMoved(false);
+				if(board[r][c]->getSymbol() == 'b') bestCounter++;
+				if(board[r][c]->getSymbol() == 'r') roverCounter++;
 			}		
 		}	
 	}
@@ -290,6 +297,10 @@ void DarwinBoard::run(int times, int print){
 	while(--times >= 0){
 		doTurn();
 		if(times % print == 0){
+			if(bestCounter == 0){
+				std::cout << "Best is dead!" << std::endl;
+				times = -1;		
+			}
 			printBoard();
 		}
 	}
@@ -382,6 +393,44 @@ char Trap::getSymbol(){
 //TRAP.H
 //
 
+//
+//BEST.H
+//
+#include "Best.h"
+Best::Best(){
+	/*
+	commands[0] = "if_enemy 8";
+	commands[1] = "if_empty 3";
+	commands[2] = "if_wall 5";
+	commands[3] = "hop";
+	commands[4] = "go 0";
+	commands[5] = "if_random 9";
+	commands[6] = "left";
+	commands[7] = "go 0";
+	commands[8] = "infect";
+	commands[9] = "go 0";
+	commands[10] = "right";
+	commands[11] = "go 0";
+	*/
+	
+	commands[0] = "if_wall 8";
+	commands[1] = "if_enemy 11";
+	commands[2] = "left";
+	commands[3] = "if_enemy 11";
+	commands[4] = "left";
+	commands[5] = "if_enemy 11";
+	commands[6] = "left";
+	commands[7] = "if_enemy 11";
+	commands[8] = "left";
+	commands[9] = "hop";
+	commands[10] = "if_wall 8";
+	commands[11] = "infect";
+	commands[12] = "go 0";
+}
+
+char Best::getSymbol(){
+	return 'b';
+}
 // ----
 // main
 // ----
@@ -458,7 +507,7 @@ int main () {
 	Hopper h;
 	Trap t;
 	Rover r;
-	//Best b;
+	Best b;
 	try {
 		cout << "*** Darwin 8x8 ***" << endl;
 		DarwinBoard eightbyeight(8,8);
@@ -592,6 +641,48 @@ int main () {
 	
 	try {
 		cout << "*** Darwin 72x72 with Best ***" << endl;
+		DarwinBoard s2bys2(72,72);
+		for(int i = 0; i < 10; i++){
+			int rd = rand() % 5184;
+			int row = rd / 72;
+			int col = rd % 72;
+			int dir = rand() % 4;
+			Creature c(0, dir, f);
+			s2bys2.putCreature(row, col, c);		
+		}
+		for(int i = 0; i < 10; i++){
+			int rd = rand() % 5184;
+			int row = rd / 72;
+			int col = rd % 72;
+			int dir = rand() % 4;
+			Creature c(0, dir, h);
+			s2bys2.putCreature(row, col, c);		
+		}
+		for(int i = 0; i < 10; i++){
+			int rd = rand() % 5184;
+			int row = rd / 72;
+			int col = rd % 72;
+			int dir = rand() % 4;
+			Creature c(0, dir, r);
+			s2bys2.putCreature(row, col, c);		
+		}
+		for(int i = 0; i < 10; i++){
+			int rd = rand() % 5184;
+			int row = rd / 72;
+			int col = rd % 72;
+			int dir = rand() % 4;
+			Creature c(0, dir, t);
+			s2bys2.putCreature(row, col, c);		
+		}
+		for(int i = 0; i < 10; i++){
+			int rd = rand() % 5184;
+			int row = rd / 72;
+			int col = rd % 72;
+			int dir = rand() % 4;
+			Creature c(0, dir, b);
+			s2bys2.putCreature(row, col, c);		
+		}
+		s2bys2.run(1000, 100);
 		/*
 		 Randomly place the following creatures facing randomly.
 		 Call rand(), mod it with 5184 (72x72), and use that for the position
