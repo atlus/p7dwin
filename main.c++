@@ -8,11 +8,11 @@
  To run the tests:
  % g++ -ansi -pedantic -lcppunit -ldl -Wall -DTEST main.c++ -o main.app
  % valgrind main.app
- 
+
  To run the program:
  % g++ -ansi -pedantic -Wall main.c++ -o main.app
  % valgrind main.app > Darwin.out
- 
+
  To configure Doxygen:
  doxygen -g
  That creates the file Doxyfile.
@@ -21,7 +21,7 @@
  EXTRACT_PRIVATE        = YES
  EXTRACT_STATIC         = YES
  GENERATE_LATEX         = NO
- 
+
  To document the program:
  doxygen Doxyfile
  */
@@ -65,17 +65,27 @@
 //
 
 #include "Creature.h"
+/**
+ * Creature Constructor
+ * @pc Creatures Program Counter
+ * @dir Creatures direction
+ * @spIn Species pointer
+ */
 Creature::Creature(int pc, int dir, Species& spIn){
 	programCount = pc;
 	direction = dir;
 	spointer = &spIn;
 	moved = false;
 }
-
+/**
+ * @return Returns the creatures species pointer
+ */
 Species* Creature::getSpecies(){
 	return spointer;
 }
-
+/**
+ * @return Returns the creatures species symbol or '.' if it doesn't have one
+ */
 char Creature::getSymbol(){
 	if(spointer != NULL){
 		return spointer->getSymbol();
@@ -83,10 +93,14 @@ char Creature::getSymbol(){
 		return '.';
 	}
 }
-
+/**
+ * Processes the current command
+ * @data Given to us to help process the command
+ * @return Returns information to darwin
+ */
 int Creature::process(int data){
 	//const char* command = spointer->commands[programCount];
-	
+
 	int returnInt = -1;
 	while(moved == false){
 		std::string command = spointer->commands[programCount];
@@ -96,13 +110,20 @@ int Creature::process(int data){
 	return returnInt;
 	//return doCommand(command, data);
 	//std::cout << command << std::endl;
-	
-}
 
+}
+/**
+ * @return Returns the creatures current direction
+ */
 int Creature::getDirection(){
 	return direction;
 }
-
+/**
+ * Carrys out the command
+ * @c Command
+ * @data Data used to carry out command
+ * @return Returns int to darwin
+ */
 int Creature::doCommand(std::string c, int data){
 		int pos = int(c.find(" "));
 		std::string left = c.substr(0, pos);
@@ -136,30 +157,30 @@ int Creature::doCommand(std::string c, int data){
 			moved = true;
 			programCount++;
 		}else{ // Perform Control
-			int p = atoi(right.c_str());		
+			int p = atoi(right.c_str());
 			if(left == "if_empty"){
 				if(data == 1){
 					programCount = p;
 				}else{
-					programCount++;				
+					programCount++;
 				}
 			}else if(left == "if_wall"){
 				if(data == 0){
 					programCount = p;
 				}else{
-					programCount++;				
+					programCount++;
 				}
 			}else if(left == "if_random"){
 				if((rand() & 1) == 1){
 					programCount = p;
 				}else{
-					programCount++;				
+					programCount++;
 				}
 			}else if(left == "if_enemy"){
 				if(data == 3){
 					programCount = p;
 				}else{
-					programCount++;				
+					programCount++;
 				}
 			}else if(left == "go"){
 				programCount = p;
@@ -167,17 +188,25 @@ int Creature::doCommand(std::string c, int data){
 		}
 		return -1;	// if we did not hop or infect
 }
-
+/**
+ * We have been infected, method changes us to the other species
+ * @sp Species to change us to
+ */
 void Creature::infect(Species* sp){
 		//std::cout << spointer << " " << sp->getSymbol() << std::endl;
 		programCount = 0;
 		spointer = sp;
 }
-
+/**
+ * Set moved
+ * b used to change value
+ */
 void Creature::setMoved(bool b){
 	moved = b;
 }
-
+/**
+ * @return Returns the state of if we have moved
+ */
 bool Creature::getMoved(){
 	return moved;
 }
@@ -191,6 +220,11 @@ bool Creature::getMoved(){
 //
 
 #include "DarwinBoard.h"
+/**
+ * Darwin Board Constructor
+ * @inX X size of the board
+ * @inY Y size of the board
+ */
 DarwinBoard::DarwinBoard(int inX, int inY){
 	turn = 0;
 	x = inX;
@@ -199,10 +233,10 @@ DarwinBoard::DarwinBoard(int inX, int inY){
 	roverCounter = 0;
 	totalC = 0;
 	board.resize(x);
-	
+
 	//cout << board.capacity() << endl;
 	//cout << board[0].capacity() << endl;
-	
+
 	for(int i = 0; i < x; i++){
 		for(int j = 0; j < y; j++){
 //			cout << j << endl;
@@ -210,6 +244,9 @@ DarwinBoard::DarwinBoard(int inX, int inY){
 		}
 	}
 }
+/**
+ * Prints out the board
+ */
 void DarwinBoard::printBoard(){
 	cout << "Turn = " << turn << ". TOTAL:" << totalC << " Best:" << bestCounter << " Rover:" << roverCounter << endl;
 	cout << "  ";
@@ -227,20 +264,28 @@ void DarwinBoard::printBoard(){
 			}
 		}
 		cout << endl;
-		
+
 	}
 }
-
+/**
+ * Places a creature on the board
+ * @newX Place the creature's X here
+ * @newY Place the creature's Y here
+ * @c Creature to be placed
+ * @return Returns true if placed on the board, else false
+ */
 bool DarwinBoard::putCreature(int newX, int newY, Creature& c){
 	if(board[newX][newY] == NULL){
 		board[newX][newY] = &c;
 		totalC++;
 		return true;
 	}else{
-		return false;	
+		return false;
 	}
 }
-
+/**
+ * Processes the next Turn
+ */
 void DarwinBoard::doTurn(){
 	bestCounter = 0;
 	roverCounter = 0;
@@ -275,7 +320,7 @@ void DarwinBoard::doTurn(){
 						//std::cout << "empty" << std::endl;
 						data = 1; // empty ahead
 					}else if(board[checkX][checkY]->getSymbol() == board[i][j]->getSymbol()){
-						data = 2; // same species ahead					
+						data = 2; // same species ahead
 					}else{
 						data = 3; // different species ahead
 					}
@@ -287,8 +332,8 @@ void DarwinBoard::doTurn(){
 				}else if(res == 1){ // infect
 					board[checkX][checkY]->infect(board[i][j]->getSpecies());
 				}
-			}	
-		}	
+			}
+		}
 	}
 	//std::cout << "-----------------------------" << std::endl;
 	for(int r = 0; r < x; r++){
@@ -299,12 +344,16 @@ void DarwinBoard::doTurn(){
 				board[r][c]->setMoved(false);
 				if(board[r][c]->getSymbol() == 'b') bestCounter++;
 				if(board[r][c]->getSymbol() == 'r') roverCounter++;
-			}		
-		}	
+			}
+		}
 	}
 	++turn;
 }
-
+/**
+ * Runs the board and prints it out
+ * @times Number of times to run the board
+ * @print Prints the board
+ */
 void DarwinBoard::run(int times, int print){
 	printBoard();
 	while(--times >= 0){
@@ -312,7 +361,7 @@ void DarwinBoard::run(int times, int print){
 		if(times % print == 0){
 			if(bestCounter == 0){
 				std::cout << "Best is dead!" << std::endl;
-				//times = -1;		
+				//times = -1;
 			}
 			printBoard();
 		}
@@ -326,6 +375,9 @@ void DarwinBoard::run(int times, int print){
 //
 //SPECIES.H
 //
+/**
+ * @return Returns a blank symbol
+ */
 char Species::getSymbol(){
  return '.';
 }
@@ -334,11 +386,16 @@ char Species::getSymbol(){
 //FOOD.H
 //
 #include "Food.h"
+/**
+ * Food Constructor
+ */
 Food::Food(){
 commands[0] = "left";
 commands[1] = "go 0";
 }
-
+/**
+ * @return Food Symbol
+ */
 char Food::getSymbol(){
 	return 'f';
 }
@@ -350,11 +407,16 @@ char Food::getSymbol(){
 //HOPPER.H
 //
 #include "Hopper.h"
+/**
+ * Hopper Constructor
+ */
 Hopper::Hopper(){
 commands[0] = "hop";
 commands[1] = "go 0";
 }
-
+/**
+ * @return Hopper Symbol
+ */
 char Hopper::getSymbol(){
 	return 'h';
 }
@@ -366,6 +428,9 @@ char Hopper::getSymbol(){
 //ROVER.H
 //
 #include "Rover.h"
+/**
+ * Rover Constructor
+ */
 Rover::Rover(){
 	 commands[0] = "if_enemy 9";
 	 commands[1] = "if_empty 7";
@@ -379,7 +444,9 @@ Rover::Rover(){
 	 commands[9] = "infect";
 	 commands[10] =  "go 0";
 }
-
+/**
+ * @return Hopper Symbol
+ */
 char Rover::getSymbol(){
 	return 'r';
 }
@@ -391,6 +458,9 @@ char Rover::getSymbol(){
 //TRAP.H
 //
 #include "Trap.h"
+/**
+ * Trap Constructor
+ */
 Trap::Trap(){
 	 commands[0] = "if_enemy 3";
 	 commands[1] = "left";
@@ -398,7 +468,9 @@ Trap::Trap(){
 	 commands[3] = "infect";
 	 commands[4] = "go 0";
 }
-
+/**
+ * @return Trap Symbol
+ */
 char Trap::getSymbol(){
 	return 't';
 }
@@ -410,6 +482,9 @@ char Trap::getSymbol(){
 //BEST.H
 //
 #include "Best.h"
+/**
+ * Best Constructor
+ */
 Best::Best(){
 	/*
 	commands[0] = "if_enemy 8";
@@ -456,9 +531,11 @@ Best::Best(){
 	 commands[13] = "go 0";
 	 commands[14] = "right";
 	 commands[15] = "go 9";
-	 
-}
 
+}
+/**
+ * @return Best Symbol
+ */
 char Best::getSymbol(){
 	return 'b';
 }
@@ -469,12 +546,12 @@ char Best::getSymbol(){
 int main () {
     using namespace std;
     ios_base::sync_with_stdio(false); // turn off synchronization with C I/O
-	
+
 #ifdef TEST
 	// ----------
 	// unit tests
 	// ----------
-	
+
 	CppUnit::TextTestRunner tr;
 	tr.addTest(cs::TestDarwin::suite());
 	tr.run();
@@ -482,29 +559,29 @@ int main () {
 	// -------
 	// program
 	// -------
-	
+
 	// ----
 	// food
 	// ----
-	
+
 	/*
 	 0: left
 	 1: go 0
 	 */
-	
+
 	// ------
 	// hopper
 	// ------
-	
+
 	/*
 	 0: hop
 	 1: go 0
 	 */
-	
+
 	// -----
 	// rover
 	// -----
-	
+
 	/*
 	 0: if_enemy 9
 	 1: if_empty 7
@@ -518,11 +595,11 @@ int main () {
 	 9: infect
 	 10: go 0
 	 */
-	
+
 	// ----
 	// trap
 	// ----
-	
+
 	/*
 	 0: if_enemy 3
 	 1: left
@@ -530,7 +607,7 @@ int main () {
 	 3: infect
 	 4: go 0
 	 */
-	
+
 	// ----------
 	// darwin 8x8
 	// ----------
@@ -572,11 +649,11 @@ int main () {
 		assert(false);}
 	catch (const out_of_range&) {
 		assert(false);}
-	
+
 	// ----------
 	// darwin 7x9
 	// ----------
-	
+
 	try {
 		cout << "*** Darwin 7x9 ***" << endl;
 		DarwinBoard sevenbynine(7,9);
@@ -603,12 +680,12 @@ int main () {
 		assert(false);}
 	catch (const out_of_range&) {
 		assert(false);}
-	
+
 	// ------------
 	// darwin 72x72
 	// without best
 	// ------------
-	
+
 	try {
 		cout << "*** Darwin 72x72 without Best ***" << endl;
 		DarwinBoard s2bys2(72,72);
@@ -624,7 +701,7 @@ int main () {
   		  		int rd = rand() % 5184;
 				row = rd / 72;
 				col = rd % 72;
-			}while(!s2bys2.putCreature(row, col, fcreatures[i]));		
+			}while(!s2bys2.putCreature(row, col, fcreatures[i]));
   		}
   		vector<Creature> hcreatures;
   		for (int i = 0; i < 10; ++i) {
@@ -636,7 +713,7 @@ int main () {
   		  		int rd = rand() % 5184;
 				row = rd / 72;
 				col = rd % 72;
-			}while(!s2bys2.putCreature(row, col, hcreatures[i]));		
+			}while(!s2bys2.putCreature(row, col, hcreatures[i]));
   		}
 		vector<Creature> rcreatures;
 		for (int i = 0; i < 10; ++i) {
@@ -648,7 +725,7 @@ int main () {
   		  		int rd = rand() % 5184;
 				row = rd / 72;
 				col = rd % 72;
-			}while(!s2bys2.putCreature(row, col, rcreatures[i]));		
+			}while(!s2bys2.putCreature(row, col, rcreatures[i]));
   		}
   		vector<Creature> tcreatures;
   		for (int i = 0; i < 10; ++i) {
@@ -660,7 +737,7 @@ int main () {
   		  		int rd = rand() % 5184;
 				row = rd / 72;
 				col = rd % 72;
-			}while(!s2bys2.putCreature(row, col, tcreatures[i]));		
+			}while(!s2bys2.putCreature(row, col, tcreatures[i]));
   		}
 		s2bys2.run(1000, 100);
 		/*
@@ -682,12 +759,12 @@ int main () {
 		assert(false);}
 	catch (const out_of_range&) {
 		assert(false);}
-	
+
 	// ------------
 	// darwin 72x72
 	// with best
 	// ------------
-	
+
 	try {
 		cout << "*** Darwin 72x72 with Best ***" << endl;
 		DarwinBoard s2bys2(72,72);
@@ -703,7 +780,7 @@ int main () {
   		  		int rd = rand() % 5184;
 				row = rd / 72;
 				col = rd % 72;
-			}while(!s2bys2.putCreature(row, col, fcreatures[i]));		
+			}while(!s2bys2.putCreature(row, col, fcreatures[i]));
   		}
   		vector<Creature> hcreatures;
   		for (int i = 0; i < 10; ++i) {
@@ -715,7 +792,7 @@ int main () {
   		  		int rd = rand() % 5184;
 				row = rd / 72;
 				col = rd % 72;
-			}while(!s2bys2.putCreature(row, col, hcreatures[i]));		
+			}while(!s2bys2.putCreature(row, col, hcreatures[i]));
   		}
 		vector<Creature> rcreatures;
 		for (int i = 0; i < 10; ++i) {
@@ -727,7 +804,7 @@ int main () {
   		  		int rd = rand() % 5184;
 				row = rd / 72;
 				col = rd % 72;
-			}while(!s2bys2.putCreature(row, col, rcreatures[i]));		
+			}while(!s2bys2.putCreature(row, col, rcreatures[i]));
   		}
   		vector<Creature> tcreatures;
   		for (int i = 0; i < 10; ++i) {
@@ -739,10 +816,10 @@ int main () {
   		  		int rd = rand() % 5184;
 				row = rd / 72;
 				col = rd % 72;
-			}while(!s2bys2.putCreature(row, col, tcreatures[i]));		
+			}while(!s2bys2.putCreature(row, col, tcreatures[i]));
   		}
   		vector<Creature> bcreatures;
-  		
+
   		for (int i = 0; i < 10; ++i) {
 			int dir = rand() % 4;
     		bcreatures.push_back(Creature(0, dir, b));
@@ -752,7 +829,7 @@ int main () {
   		  		int rd = rand() % 5184;
 				row = rd / 72;
 				col = rd % 72;
-			}while(!s2bys2.putCreature(row, col, bcreatures[i]));		
+			}while(!s2bys2.putCreature(row, col, bcreatures[i]));
   		}
 		s2bys2.run(1000, 100);
 		/*
@@ -776,5 +853,5 @@ int main () {
 	catch (const out_of_range&) {
 		assert(false);}
 #endif // NDEBUG
-	
+
     return 0;}
