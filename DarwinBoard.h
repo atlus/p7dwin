@@ -21,6 +21,7 @@ public:
 	bool putCreature(int newX, int newY, Creature& c);
 	void doTurn();
 	void run(int times, int print);
+	std::string boardToString();
 };
 
 #endif

@@ -248,7 +248,8 @@ DarwinBoard::DarwinBoard(int inX, int inY){
  * Prints out the board
  */
 void DarwinBoard::printBoard(){
-	cout << "Turn = " << turn << ". TOTAL:" << totalC << " Best:" << bestCounter << " Rover:" << roverCounter << endl;
+	//cout << "Turn = " << turn << ". TOTAL:" << totalC << " Best:" << bestCounter << " Rover:" << roverCounter << endl;
+	cout << "Turn = " << turn <<endl;
 	cout << "  ";
 	for(int i = 0; i < y; i++){
 		cout<< i ;
@@ -266,6 +267,32 @@ void DarwinBoard::printBoard(){
 		cout << endl;
 
 	}
+}
+/**
+ * ToString of the board
+ * @return the board in string form
+ */
+std::string DarwinBoard::boardToString(){
+  ostringstream oss;
+	//oss << "Turn = " << turn << ". TOTAL:" << totalC << " Best:" << bestCounter << " Rover:" << roverCounter << endl;
+	oss << "Turn = " << turn <<endl;
+	oss << "  ";
+	for(int i = 0; i < y; i++){
+		oss<< i ;
+	}
+	oss << endl;
+	for(int i = 0; i < x; i++){
+		oss << i<< " ";
+		for(int j = 0; j < y; j++){
+			if(board[i][j] != NULL){
+				oss << board[i][j]->getSymbol();
+			}else{
+				oss << ".";
+			}
+		}
+		oss << endl;
+	}
+	return oss.str();
 }
 /**
  * Places a creature on the board
