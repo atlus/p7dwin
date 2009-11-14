@@ -32,6 +32,7 @@
 
 #include <cassert>   // assert
 #include <iostream>  // cout, endl
+#include <sstream>
 #include <stdexcept> // invalid_argument, out_of_range
 
 
@@ -387,7 +388,7 @@ void DarwinBoard::run(int times, int print){
 		doTurn();
 		if(times % print == 0){
 			if(bestCounter == 0){
-				std::cout << "Best is dead!" << std::endl;
+				//std::cout << "Best is dead!" << std::endl;
 				//times = -1;
 			}
 			printBoard();

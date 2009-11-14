@@ -1,0 +1,56 @@
+g++ -ansi -pedantic -lcppunit -ldl -Wall -DTEST main.c++ -o main.app
+In file included from Creature.h:3,
+                 from DarwinBoard.h:4,
+                 from TestDarwin.h:16,
+                 from main.c++:43:
+Species.h:47:7: warning: no newline at end of file
+In file included from DarwinBoard.h:4,
+                 from TestDarwin.h:16,
+                 from main.c++:43:
+Creature.h:21:7: warning: no newline at end of file
+In file included from TestDarwin.h:16,
+                 from main.c++:43:
+DarwinBoard.h:27:7: warning: no newline at end of file
+In file included from TestDarwin.h:18,
+                 from main.c++:43:
+Food.h:19:7: warning: no newline at end of file
+In file included from TestDarwin.h:19,
+                 from main.c++:43:
+Rover.h:20:7: warning: no newline at end of file
+In file included from main.c++:43:
+TestDarwin.h:116:23: warning: no newline at end of file
+In file included from main.c++:437:
+Hopper.h:20:7: warning: no newline at end of file
+In file included from main.c++:488:
+Trap.h:20:7: warning: no newline at end of file
+In file included from main.c++:512:
+Best.h:19:7: warning: no newline at end of file
+valgrind main.app
+==31818== Memcheck, a memory error detector.
+==31818== Copyright (C) 2002-2008, and GNU GPL'd, by Julian Seward et al.
+==31818== Using LibVEX rev 1878, a library for dynamic binary translation.
+==31818== Copyright (C) 2004-2008, and GNU GPL'd, by OpenWorks LLP.
+==31818== Using valgrind-3.4.0, a dynamic binary instrumentation framework.
+==31818== Copyright (C) 2000-2008, and GNU GPL'd, by Julian Seward et al.
+==31818== For more details, rerun with: -v
+==31818== 
+.....
+
+
+OK (5 tests)
+
+
+==31818== 
+==31818== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 21 from 1)
+==31818== malloc/free: in use at exit: 122,880 bytes in 6 blocks.
+==31818== malloc/free: 239 allocs, 233 frees, 145,754 bytes allocated.
+==31818== For counts of detected errors, rerun with: -v
+==31818== searching for pointers to 6 not-freed blocks.
+==31818== checked 124,220 bytes.
+==31818== 
+==31818== LEAK SUMMARY:
+==31818==    definitely lost: 0 bytes in 0 blocks.
+==31818==      possibly lost: 0 bytes in 0 blocks.
+==31818==    still reachable: 122,880 bytes in 6 blocks.
+==31818==         suppressed: 0 bytes in 0 blocks.
+==31818== Rerun with --leak-check=full to see details of leaked memory.
