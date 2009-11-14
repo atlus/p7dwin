@@ -1,0 +1,120 @@
+commit c6ce483e05b837bbcf1bf40ed49f1d3765966c62
+Author: MikePena <mikepena@gmail.com>
+Date:   Fri Nov 13 22:45:54 2009 -0600
+
+    R19 Added Darwin.out and TestDarin.out
+
+commit 803d8eb08bbc2bbfb8da65273149067ec5d4f558
+Author: MikePena <mikepena@gmail.com>
+Date:   Fri Nov 13 22:32:44 2009 -0600
+
+    R18 Added tests and Darinboard.boardToString method for testing
+
+commit 5d37d46d535e98a1977d2a5557318261782900cd
+Author: unknown <Michael@.(none)>
+Date:   Fri Nov 13 19:51:14 2009 -0600
+
+    R17 Added Comments to main.c++
+
+commit dc686d49db811d9c86c9b46c5b04dd3073bec876
+Author: Jeremy Lopez <jml948@mei.cs.utexas.edu>
+Date:   Fri Nov 13 17:38:06 2009 -0600
+
+    R16 Commit before adding comments
+
+commit aa51edf3e9d416fd3db122c9e8dda4e91d443daa
+Author: Jeremy Lopez <jml948@mei.cs.utexas.edu>
+Date:   Fri Nov 13 17:25:59 2009 -0600
+
+    R15 Correct a bug with placing a creature on top of another creature by random. Instead we continue to randomly look for a new location to place the creature on the grid.
+
+commit 5caef1531045142c4514a4886ca81feb3063d570
+Author: Jeremy Lopez <jml948@mei.cs.utexas.edu>
+Date:   Fri Nov 13 17:14:13 2009 -0600
+
+    R14 Fixed bug that allowed only a single creature instead of a unique one each time
+
+commit 552d867a18123fb30f2a6d24b1aca946b4c400d6
+Author: Jeremy Lopez <jml948@mei.cs.utexas.edu>
+Date:   Fri Nov 13 16:18:40 2009 -0600
+
+    R13 Added Best.h to repository
+
+commit 9cee28c5b21b8db970317874b000a6cda56a23f5
+Author: Jeremy Lopez <jml948@mei.cs.utexas.edu>
+Date:   Fri Nov 13 16:17:28 2009 -0600
+
+    R12 Adding best
+    	Best.h
+
+commit b7f1b05c1f30f04baa19258605f9e47dc34a79cb
+Author: Jeremy Lopez <jml948@mei.cs.utexas.edu>
+Date:   Fri Nov 13 16:06:04 2009 -0600
+
+    R12 Actually identified error that was occuring with process method for infect command
+
+commit 068463b0d0bd174128a84e8d342288e151d9fc9d
+Author: Jeremy Lopez <jml948@mei.cs.utexas.edu>
+Date:   Fri Nov 13 15:41:42 2009 -0600
+
+    R11 Fixed null pointer in infect command
+
+commit dcb91e2ed08d28acec74537a1b336e785907200b
+Author: Jeremy Lopez <jml948@gina.cs.utexas.edu>
+Date:   Thu Nov 12 19:49:49 2009 -0600
+
+    R10 Added comments to main
+
+commit f5147f74233c3bcc389bcbae84220cd9c3f2319a
+Author: Jeremy Lopez <jml948@gina.cs.utexas.edu>
+Date:   Thu Nov 12 19:45:25 2009 -0600
+
+    R9 Modified run command to support numbr of times to print out.
+
+commit 52d5a442a6d8275ba8cffe6372ce87dcd3f32564
+Author: Jeremy Lopez <jml948@gina.cs.utexas.edu>
+Date:   Thu Nov 12 19:25:39 2009 -0600
+
+    R8 Fixed bug in if_enemy and if_empty controls.
+
+commit eb5d291eb5f2f2259258a2d4dba072076e7649b8
+Author: Jeremy Lopez <jml948@gina.cs.utexas.edu>
+Date:   Thu Nov 12 19:12:39 2009 -0600
+
+    R7 Fixed the moved boolean error. Also added Darwin run method. Fixed infinite loop error from action commands.
+
+commit 8a8486ee4d89354c4cdc418a98180d742bd58a29
+Author: Jeremy Lopez <jml948@gina.cs.utexas.edu>
+Date:   Thu Nov 12 19:05:37 2009 -0600
+
+    R6 Fixed action/control commands. Have to fix moved bool back to false before next turn.
+
+commit 6e7e8fe841c2234638b3eaddc2db7d7aea4ea156
+Author: Jeremy Lopez <jml948@gina.cs.utexas.edu>
+Date:   Thu Nov 12 18:13:37 2009 -0600
+
+    R5 Intial set up of action and control commands.
+
+commit a532f1ad9d18d96d303c8683ed9a80e0578a565a
+Author: Jeremy Lopez <jml948@gina.cs.utexas.edu>
+Date:   Thu Nov 12 16:50:51 2009 -0600
+
+    R4 Added Rover.h, Trap.h and method/constructor code.
+
+commit f0e888e9643ce3902f513068735aadfefc7dafdb
+Author: Jeremy Lopez <jml948@gina.cs.utexas.edu>
+Date:   Thu Nov 12 16:30:06 2009 -0600
+
+    R3 small hopper change
+
+commit 83bd638a3ee4c19b5b00a780594651c8a0f8ab9d
+Author: Jeremy Lopez <jml948@gina.cs.utexas.edu>
+Date:   Thu Nov 12 16:28:22 2009 -0600
+
+    R2 Added food, hopper, changed darwinboard
+
+commit 1150b45b96d2d4c98b199baad627dd6972919a31
+Author: MikePena <mikepena@gmail.com>
+Date:   Thu Nov 12 12:22:25 2009 -0600
+
+    R1 Initial commit.
